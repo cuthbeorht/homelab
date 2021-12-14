@@ -22,7 +22,5 @@ services:
       - PLEX_CLAIM=#optional
     volumes:
       - /home/homelab/media:/config
-    ports:
-      - "32400:32400"
 volumes:
   portainer_data:
