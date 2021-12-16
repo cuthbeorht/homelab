@@ -1,4 +1,4 @@
-version: "3.8"
+version: "2.1"
 services:
   portainer:
     image: cr.portainer.io/portainer/portainer-ce:2.9.3
@@ -23,15 +23,31 @@ services:
       - PLEX_CLAIM=#optional
     volumes:
       - /home/homelab/media:/config
-  reverse-proxy:
-    image: nginx:1.21
-    container_name: reverse-proxy
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
+  swag:
+    image: ghcr.io/linuxserver/swag
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - URL=davidsciacchettano.dev
+      - SUBDOMAINS=www,
+      - VALIDATION=http
+      # - CERTPROVIDER= #optional
+      # - DNSPLUGIN=cloudflare #optional
+      # - DUCKDNSTOKEN=<token> #optional
+      # - EMAIL=<e-mail> #optional
+      # - ONLY_SUBDOMAINS=false #optional
+      # - EXTRA_DOMAINS=<extradomains> #optional
+      # - STAGING=false #optional
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - /home/homelab/swag:/config
+    ports:
+      - 443:443
+      - 80:80 #optional
+    restart: unless-stopped
 
 volumes:
   portainer_data:
