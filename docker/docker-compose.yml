@@ -48,6 +48,13 @@ services:
       - 443:443
       - 80:80 #optional
     restart: unless-stopped
-
+  jekyll:
+      image: ghcr.io/cuthbeorht/davidsciacchettano.ca
+      container_name: jekyll
+      environment:
+        - JEKYLL_VERSION=3.8
+      command: ['jekyll', 'serve']
+      ports:
+        - "4000:4000"
 volumes:
   portainer_data:
