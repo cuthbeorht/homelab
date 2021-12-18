@@ -26,4 +26,4 @@ if __name__ == "__main__":
 
         elif type(file) is FileMetadata:
             print(f"Item is a File")
-            dbx.files_download_to_file("/home/homelab/media" + file.path_lower)
+            dbx.files_download_to_file("/home/homelab/media" + file.path_lower, file.path_lower)
