@@ -72,14 +72,24 @@ services:
       - 443:443
       - 80:80 #optional
     restart: unless-stopped
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://localhost:12201" # Logstash UDP input port
+        tag: "swag"
   jekyll:
-      image: ghcr.io/cuthbeorht/davidsciacchettano.ca
-      container_name: jekyll
-      environment:
-        - JEKYLL_VERSION=3.8
-      command: ['jekyll', 'serve']
-      ports:
-        - "4000:4000"
+    image: ghcr.io/cuthbeorht/davidsciacchettano.ca
+    container_name: jekyll
+    environment:
+      - JEKYLL_VERSION=3.8
+    command: ['jekyll', 'serve']
+    ports:
+      - "4000:4000"
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://localhost:12201" # Logstash UDP input port
+        tag: "jekyll"
   elasticsearch:
     image: elasticsearch:7.11.1
     environment:
