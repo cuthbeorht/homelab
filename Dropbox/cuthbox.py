@@ -1,3 +1,5 @@
+import pathlib
+
 import dropbox
 import os
 import json
@@ -7,7 +9,28 @@ dropbox_access_token = os.getenv('DROPBOX_ACCESS_TOKEN')
 
 
 
+def process_folder(dbx, folder):
+
+    list_folder_result = dbx.files_list_folder(folder)
+
+    for file in list_folder_result.entries:
+        print(f"File: {file}")
+
+        if type(file) is FolderMetadata:
+            print("File is a folder")
+            process_folder(dbx, file.path_lower)
+
+        elif type(file) is FileMetadata:
+            print(f"Item is a File")
+            full_path = pathlib.Path("/home/davids/src/homelab/media" + file.path_lower)
+            if not os.path.isfile(full_path):
+                full_path.parent.mkdir(parents=True, exist_ok=True)
+                dbx.files_download_to_file(str(full_path), file.path_lower)
+
+
 if __name__ == "__main__":
+
+    print(f"Cuthbeorht's Sync Script starting...")
 
     if not dropbox_access_token:
         raise Exception("No Dropbox token present")
@@ -16,14 +39,6 @@ if __name__ == "__main__":
 
     print(f"User: {dbx.users_get_current_account()}")
 
-    list_folder_result = dbx.files_list_folder('/Music')
+    process_folder(dbx, '/Music')
 
-    for file in list_folder_result.entries:
-        print(f"File: {file}")
-
-        if type(file) is FolderMetadata:
-            print("File is a folder")
-
-        elif type(file) is FileMetadata:
-            print(f"Item is a File")
-            dbx.files_download_to_file("/home/homelab/media" + file.path_lower, file.path_lower)
+    print(f"Cuthbeorht's Sync Script finished")
