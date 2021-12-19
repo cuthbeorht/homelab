@@ -23,14 +23,15 @@ services:
       - PLEX_CLAIM=#optional
     volumes:
       - /home/homelab/media:/config
+      - /home/homelab/dropbox:/data
   cuthbox:
     build:
       context: ../Dropbox
     container_name: cuth-sync
     environment:
-      - DROPBOX_ACCESS_TOKEN:"${DROPBOX_ACCESS_TOKEN}"
+      - DROPBOX_ACCESS_TOKEN
     volumes:
-      - /home/homelab/media:/opt
+      - /home/homelab/dropbox:/opt
   swag:
     image: ghcr.io/linuxserver/swag
     container_name: swag
