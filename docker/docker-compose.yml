@@ -11,6 +11,11 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://localhost:12201" # Logstash UDP input port
+        tag: "portainer"
   plex:
     image: lscr.io/linuxserver/plex
     container_name: plex
@@ -24,6 +29,11 @@ services:
     volumes:
       - /home/homelab/media:/config
       - /home/homelab/dropbox:/data
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://localhost:12201" # Logstash UDP input port
+        tag: "plex"
   cuthbox:
     build:
       context: ../Dropbox
@@ -32,6 +42,11 @@ services:
       - DROPBOX_ACCESS_TOKEN
     volumes:
       - /home/homelab/dropbox:/opt
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://localhost:12201" # Logstash UDP input port
+        tag: "cuthbox"
   swag:
     image: ghcr.io/linuxserver/swag
     container_name: swag
