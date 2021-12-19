@@ -22,7 +22,7 @@ def process_folder(dbx, folder):
 
         elif type(file) is FileMetadata:
             print(f"Item is a File")
-            full_path = pathlib.Path("/home/davids/src/homelab/media" + file.path_lower)
+            full_path = pathlib.Path("/home/homelab/media/Library" + file.path_lower)
             if not os.path.isfile(full_path):
                 full_path.parent.mkdir(parents=True, exist_ok=True)
                 dbx.files_download_to_file(str(full_path), file.path_lower)
