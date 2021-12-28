@@ -82,6 +82,7 @@ services:
     container_name: jekyll
     environment:
       - JEKYLL_VERSION=3.8
+      - JEKYLL_ENV=production
     command: ['jekyll', 'serve']
     ports:
       - "4000:4000"
